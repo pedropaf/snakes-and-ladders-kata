@@ -58,4 +58,16 @@ describe('Snakes and Ladders', () => {
       expect(snakesAndLadders.hasPlayerWon()).toBe(true);
     });
   });
+
+  describe('Snakes Go Down, Not Up', () => {
+    it('Given there is a snake connecting squares 2 and 12, When the token lands on square 12, Then the token is on square 2', () => {
+      snakesAndLadders.moveToken(11);
+      expect(snakesAndLadders.getTokenSquare()).toBe(2);
+    });
+
+    it('Given there is a snake connecting squares 2 and 12, When the token lands on square 2, Then the token is on square 2', () => {
+      snakesAndLadders.moveToken(1);
+      expect(snakesAndLadders.getTokenSquare()).toBe(2);
+    });
+  });
 });
