@@ -25,11 +25,6 @@ describe('Snakes and Ladders', () => {
   });
 
   describe('Moves Are Determined By Dice Rolls', () => {
-
-    afterEach(() => {
-      jest.spyOn(global.Math, 'random').mockRestore();
-    });
-
   it ('Given the game is started, When the player rolls a die, Then the result should be between 1-6 inclusive', () => {
       const rollDiceResult = snakesAndLadders.rollDice();
       expect(rollDiceResult).toBeGreaterThanOrEqual(1);
@@ -44,7 +39,23 @@ describe('Snakes and Ladders', () => {
       snakesAndLadders.rollDice();
 
       expect(moveTokenSpy).toBeCalledWith(4);
+      jest.spyOn(global.Math, 'random').mockRestore();
+    });
+  });
+
+  describe('Player can win the game', () => {
+  it('Given the token is on square 97, When the token is moved 3 spaces, Then the token is on square 100, And the player has won the game', () => {
+      snakesAndLadders.moveToken(96);
+      expect(snakesAndLadders.getTokenSquare()).toBe(97);
+      snakesAndLadders.moveToken(3);
+      expect(snakesAndLadders.hasPlayerWon()).toBe(true);
     });
 
+  it('Given the token is on square 97, When the token is moved 4 spaces, Then the token is on square 97, And the player has not won the game', () => {
+      snakesAndLadders.moveToken(96);
+      expect(snakesAndLadders.getTokenSquare()).toBe(97);
+      snakesAndLadders.moveToken(4);
+      expect(snakesAndLadders.hasPlayerWon()).toBe(true);
+    });
   });
 });

@@ -15,4 +15,8 @@ export default class SnakesAndLadders {
     this.tokenPostion += spaces;
     return this.tokenPostion;
   }
+
+  public hasPlayerWon(): boolean {
+    return this.tokenPostion >= 100;
+  }
 }
