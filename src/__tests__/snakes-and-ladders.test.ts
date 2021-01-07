@@ -1,4 +1,8 @@
-import SnakesAndLadders from "../snakesAndLadders";
+import {
+  SnakesAndLadders,
+  Snake,
+  Ladder
+} from "../snakesAndLadders";
 
 describe('Snakes and Ladders', () => {
   let snakesAndLadders: SnakesAndLadders;
@@ -60,6 +64,10 @@ describe('Snakes and Ladders', () => {
   });
 
   describe('Snakes Go Down, Not Up', () => {
+    beforeEach(() => {
+      snakesAndLadders.addSnake(new Snake(12, 2));
+    });
+
     it('Given there is a snake connecting squares 2 and 12, When the token lands on square 12, Then the token is on square 2', () => {
       snakesAndLadders.moveToken(11);
       expect(snakesAndLadders.getTokenSquare()).toBe(2);
@@ -68,6 +76,22 @@ describe('Snakes and Ladders', () => {
     it('Given there is a snake connecting squares 2 and 12, When the token lands on square 2, Then the token is on square 2', () => {
       snakesAndLadders.moveToken(1);
       expect(snakesAndLadders.getTokenSquare()).toBe(2);
+    });
+  });
+
+  describe('Ladders Go Up, Not Down', () => {
+    beforeEach(() => {
+      snakesAndLadders.addLadder(new Ladder(2, 12));
+    });
+
+    it('Given there is a ladder connecting squares 2 and 12, When the token lands on square 2, Then the token is on square 12', () => {
+      snakesAndLadders.moveToken(1);
+      expect(snakesAndLadders.getTokenSquare()).toBe(12);
+    });
+
+    it('Given there is a ladder connecting squares 2 and 12, When the token lands on square 12, Then the token is on square 12', () => {
+      snakesAndLadders.moveToken(11);
+      expect(snakesAndLadders.getTokenSquare()).toBe(12);
     });
   });
 });

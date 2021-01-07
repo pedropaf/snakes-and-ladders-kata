@@ -1,10 +1,7 @@
-export default class SnakesAndLadders {
+export class SnakesAndLadders {
   private tokenPostion: number = 1;
   private snakes: Array<Snake> = [];
-
-  constructor() {
-    this.snakes.push(new Snake(12, 2));
-  }
+  private ladders: Array<Ladder> = [];
 
   public getTokenSquare(): number {
     return this.tokenPostion;
@@ -18,12 +15,32 @@ export default class SnakesAndLadders {
 
   public moveToken(spaces: number): number {
     this.tokenPostion += spaces;
-    this.tokenPostion = this.moveDown(this.tokenPostion);
+    this.tokenPostion = this.moveUpOrDown(this.tokenPostion);
     return this.tokenPostion;
   }
 
   public hasPlayerWon(): boolean {
     return this.tokenPostion >= 100;
+  }
+
+  public addSnake(snake: Snake): void {
+    this.snakes.push(snake);
+  }
+
+  public addLadder(ladder: Ladder): void {
+    this.ladders.push(ladder);
+  }
+
+  private moveUpOrDown(position: number): number {
+    const finalPosition = this.moveDown(position);
+    return position === finalPosition ? this.moveUp(position) : finalPosition;
+  }
+
+  private moveUp(position: number): number {
+    let ladders = this.ladders.filter(l => {
+      return l.getInitialPosition() === position
+    });
+    return ladders.length ? ladders[0].getFinalPosition() : position;
   }
 
   private moveDown(position: number): number {
@@ -34,7 +51,7 @@ export default class SnakesAndLadders {
   }
 }
 
-class Snake {
+class Shortcut {
   private initialPosition: number;
   private finalPosition: number;
 
@@ -49,5 +66,23 @@ class Snake {
 
   getFinalPosition(): number {
     return this.finalPosition;
+  }
+}
+
+export class Snake extends Shortcut {
+  constructor(initialPosition: number, finalPosition: number) {
+    if (initialPosition <= finalPosition) {
+      throw new Error('Snakes can only go down');
+    }
+    super(initialPosition, finalPosition);
+  }
+}
+
+export class Ladder extends Shortcut {
+  constructor(initialPosition: number, finalPosition: number) {
+    if (initialPosition >= finalPosition) {
+      throw new Error('Ladders can only go up');
+    }
+    super(initialPosition, finalPosition);
   }
 }
