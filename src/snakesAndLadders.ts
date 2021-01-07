@@ -5,7 +5,14 @@ export default class SnakesAndLadders {
     return this.tokenPostion;
   }
 
-  public rollDice(): void {
-    this.tokenPostion += Math.floor(Math.random() * 6) + 1;
+  public rollDice(): number {
+    const result = Math.floor(Math.random() * 6) + 1;
+    this.moveToken(result);
+    return result;
+  }
+
+  public moveToken(spaces: number): number {
+    this.tokenPostion += spaces;
+    return this.tokenPostion;
   }
 }
